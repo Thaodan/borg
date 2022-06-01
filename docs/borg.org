@@ -798,6 +798,18 @@ These targets act on most drones but exclude those for which the Git
 variable ~submodule.DRONE.build-step~ is set.  The assumption is that
 those are the drones that take longer to build.
 
+- Command: native-compile ::
+
+  This target compiles all drones natively.  It doesn't byte-compile
+  them and it doesn't compile any init files and therefore has to be
+  explicitly used in combination with the ~build~ target.  Unlike when
+  using ~build-native~, you don't have to wait for native compilation to
+  complete before you can launch Emacs:
+
+  #+begin_src undefined
+    make clean build ; emacs & ; make native-compile
+  #+end_src
+
 - Command: quick ::
 
   This target cleans and builds most drones.

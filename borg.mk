@@ -55,6 +55,7 @@ help helpall::
 	$(info make build           = byte-compile all drones and init files)
 	$(info make native          = byte+native-compile drones and byte-compile init files)
 helpall::
+	$(info make native-compile  = native-compile all drones)
 	$(info make quick-clean     = clean most drones and init files)
 	$(info make quick-build     = byte-compile most drones and init files)
 help helpall::
@@ -102,6 +103,11 @@ native: init-clean
 	@$(EMACS) $(EMACS_ARGUMENTS) $(EMACS_EXTRA) $(SILENCIO) \
 	$(BORG_ARGUMENTS) \
 	--eval "(borg-batch-rebuild nil t)" $(INIT_FILES) 2>&1
+
+native-compile:
+	@$(EMACS) $(EMACS_ARGUMENTS) $(EMACS_EXTRA) $(SILENCIO) \
+	$(BORG_ARGUMENTS) \
+	--eval "(borg--batch-native-compile)" 2>&1
 
 ## Batch Quick
 
