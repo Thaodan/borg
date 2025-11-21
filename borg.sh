@@ -160,8 +160,10 @@ clone () {
 checkout () {
     path="$1"
     shift
-    force="$1"
-    shift
+    if [ $# -eq 1 ] ; then
+        force="$1"
+        shift
+    fi
     echo "--- [$path] ---"
 
     cd "$super"
@@ -197,6 +199,11 @@ checkout () {
             echo "Skipping $path (tip no longer matches upstream)"
             echo "    HEAD: $head"
             echo "expected: $hash"
+        elif [ "${force:-nil}" = t ] && [ -z "$branch" ]
+             # FIXME: Check if the current branch matches the upstreams
+             # head or git the submodules branch variable
+        then
+            echo "HEAD is in detached state, expected a branch"
         else
             echo "Checkout $path ($hash)"
             echo "HEAD was $(git log --no-walk --format='%h %s' HEAD)"
@@ -222,6 +229,7 @@ cmd_clone () {
 }
 
 cmd_checkout () {
+    local force=
     while [ $# -gt 0 ]
     do
         case "$1" in
